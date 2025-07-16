@@ -3,19 +3,136 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+        font-family: sans-serif;
+      }
+      #link-button {
+        position: absolute;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: white;
+        padding: 12px 24px;
+        border-radius: 25px;
+        font-weight: bold;
+        border: none;
+        cursor: pointer;
+        z-index: 10;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        pointer-events: auto;
+      }
+      #menu {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255,255,255,0.95);
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 20;
+        pointer-events: auto;
+      }
+      .menu-button {
+        margin: 12px 0;
+        padding: 12px 24px;
+        border-radius: 25px;
+        border: none;
+        background: white;
+        font-weight: bold;
+        font-size: 16px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        cursor: pointer;
+        pointer-events: auto;
+      }
+      #close-menu {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: black;
+        color: white;
+        border: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        font-size: 20px;
+        font-weight: bold;
+        cursor: pointer;
+        pointer-events: auto;
+      }
+    </style>
   </head>
   <body>
-    <a-scene mindar-image="imageTargetSrc: https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/image-tracking/assets/card-example/card.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+    <a-scene mindar-image="imageTargetSrc: targets_v3.mind;" color-space="sRGB"
+             renderer="colorManagement: true, physicallyCorrectLights"
+             vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
       <a-assets>
-        <img id="card" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/image-tracking/assets/card-example/card.png" />
-        <a-asset-item id="avatarModel" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/image-tracking/assets/card-example/softmind/scene.gltf"></a-asset-item>
+        <a-asset-item id="avatarModel" src="LogoNoo_v2.glb"></a-asset-item>
+        <video id="bgVideo" src="AnimatedBG.mp4" preload="auto" muted playsinline webkit-playsinline loop></video>
       </a-assets>
-
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+      <!-- :white_check_mark: Lights added here -->
+      <a-entity light="type: ambient; intensity: 0.75;"></a-entity>
+      <a-entity light="type: directional; intensity: 0.9; castShadow: false;" position="1 2 1"></a-entity>
+      <a-entity light="type: directional; intensity: 0.5;" position="-1 2 -1"></a-entity>
       <a-entity mindar-image-target="targetIndex: 0">
-        <a-plane src="#card" position="0 0 0" height="0.552" width="1" rotation="0 0 0"></a-plane>
-        <a-gltf-model rotation="0 0 0 " position="0 0 0.1" scale="0.005 0.005 0.005" src="#avatarModel" animation="property: position; to: 0 0.1 0.1; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate">
+        <a-video
+          src="#bgVideo"
+          width="1"
+          height="0.552"
+          position="0 0 0"
+          rotation="0 0 0">
+        </a-video>
+        <a-gltf-model
+          id="model"
+          rotation="90 0 0"
+          position="0 0 0.2"
+          scale="2.5 2.5 2.5"
+          src="#avatarModel"
+          animation__rotate="property: rotation; to: 450 0 0; dur: 10000; easing: linear; loop: true"
+          animation__scale="property: scale; from: 2.5 2.5 2.5; to: 3 3 3; dur: 4000; dir: alternate; easing: easeInOutSine; loop: true"
+        ></a-gltf-model>
       </a-entity>
     </a-scene>
+    <!-- UI -->
+    <button id="link-button">Links NOO Works</button>
+    <div id="menu">
+      <button id="close-menu">✕</button>
+      <button class="menu-button" onclick="window.open('https://noo.com.br/', '_blank')">Website</button>
+      <button class="menu-button" onclick="window.open('https://www.instagram.com/noo.works/', '_blank')">Instagram</button>
+      <button class="menu-button" onclick="window.open('https://www.behance.net/noo_works', '_blank')">Behance</button>
+    </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const linkBtn = document.getElementById('link-button');
+        const menu = document.getElementById('menu');
+        const closeBtn = document.getElementById('close-menu');
+        const bgVideo = document.getElementById('bgVideo');
+        bgVideo.addEventListener('canplaythrough', () => {
+          bgVideo.muted = true;
+          bgVideo.playsInline = true;
+          bgVideo.loop = true;
+          bgVideo.play().catch((e) => {
+            console.warn('Autoplay failed:', e);
+          });
+        });
+        setTimeout(() => {
+          if (bgVideo.paused) {
+            bgVideo.play().catch((e) => {});
+          }
+        }, 1000);
+        linkBtn.addEventListener('click', () => {
+          menu.style.display = 'flex';
+        });
+        closeBtn.addEventListener('click', () => {
+          menu.style.display = 'none';
+        });
+      });
+    </script>
   </body>
 </html>

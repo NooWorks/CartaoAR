@@ -84,7 +84,6 @@
         <a-asset-item id="ponteModel" src="PonteV1.glb"></a-asset-item>
         <a-asset-item id="estrelaModel" src="EstrelaV1.glb"></a-asset-item>
         <video id="bgVideo" src="AnimatedBG.mp4" preload="auto" muted playsinline webkit-playsinline loop></video>
-        <img id="occImage" src="Occ_Test.png" />
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
@@ -95,9 +94,7 @@
       <a-entity light="type: directional; intensity: 0.5;" position="-1 2 -1"></a-entity>
 
       <a-entity mindar-image-target="targetIndex: 0">
-        <!-- Background video -->
         <a-video
-          id="bgVideoEntity"
           src="#bgVideo"
           width="1"
           height="0.552"
@@ -105,15 +102,6 @@
           rotation="0 0 0">
         </a-video>
 
-        <!-- Invisible occluder plane -->
-        <a-plane
-          geometry="primitive: plane; width: 1; height: 0.552"
-          material="src: #occImage; transparent: true; alphaTest: 0.5; colorWrite: false; depthWrite: true; depthTest: true; side: double"
-          position="0 0 0"
-          rotation="0 0 0"
-        ></a-plane>
-
-        <!-- Main model -->
         <a-gltf-model
           id="model"
           rotation="90 0 0"
@@ -124,11 +112,11 @@
           animation__scale="property: scale; from: 2.5 2.5 2.5; to: 3 3 3; dur: 4000; dir: alternate; easing: easeInOutSine; loop: true"
         ></a-gltf-model>
 
-        <!-- Other rotating models -->
+        <!-- Rotating new models at origin -->
         <a-gltf-model
           id="chapeu"
           src="#chapeuModel"
-          rotation="0 -360 0"
+          rotation="0 0 0"
           position="0 0 0"
           scale="1 1 1"
           animation__rotate="property: rotation; to: 0 -360 0; dur: 9000; easing: linear; loop: true"
@@ -138,7 +126,7 @@
         <a-gltf-model
           id="escada"
           src="#escadaModel"
-          rotation="0 360 0"
+          rotation="0 0 0"
           position="0 0 0"
           scale="1 1 1"
           animation__rotate="property: rotation; to: 0 360 0; dur: 8000; easing: linear; loop: true"
@@ -148,7 +136,7 @@
         <a-gltf-model
           id="ponte"
           src="#ponteModel"
-          rotation="0 -360 0"
+          rotation="0 0 0"
           position="0 0 0"
           scale="1 1 1"
           animation__rotate="property: rotation; to: 0 -360 0; dur: 8500; easing: linear; loop: true"
@@ -158,7 +146,7 @@
         <a-gltf-model
           id="estrela"
           src="#estrelaModel"
-          rotation="0 360 0"
+          rotation="0 0 0"
           position="0 0 0"
           scale="1 1 1"
           animation__rotate="property: rotation; to: 0 360 0; dur: 7500; easing: linear; loop: true"

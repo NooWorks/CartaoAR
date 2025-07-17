@@ -108,13 +108,13 @@
         </a-video>
  -->
         <!-- Invisible occluder plane using PNG's alpha as mask -->
-        <a-plane
-          width="1"
-          height="0.552"
-          position="0 0 0"
-          rotation="0 0 0"
-          material="src: #occImage; transparent: true; alphaTest: 0.5; colorWrite: false; depthWrite: true; side: double">
-        </a-plane>
+<a-plane
+  width="1"
+  height="0.552"
+  position="0 0 0"
+  rotation="0 0 0"
+  material="transparent: true; opacity: 0; colorWrite: false; depthWrite: true; side: double">
+</a-plane>
 
         <!-- Main model -->
         <a-gltf-model

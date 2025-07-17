@@ -23,7 +23,7 @@
         <a-asset-item id="escadaModel" src="EscadaV1.glb"></a-asset-item>
         <a-asset-item id="ponteModel" src="PonteV1.glb"></a-asset-item>
         <a-asset-item id="estrelaModel" src="EstrelaV1.glb"></a-asset-item>
-        <video id="bgVideo" src="AnimatedBG.mp4" preload="auto" muted playsinline webkit-playsinline loop></video>
+<!--         <video id="bgVideo" src="AnimatedBG.mp4" preload="auto" muted playsinline webkit-playsinline loop></video> -->
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
@@ -35,7 +35,7 @@
 
       <a-entity mindar-image-target="targetIndex: 0">
         <!-- Background video -->
-        <a-video id="bgVideoEntity" src="#bgVideo" width="1" height="0.552" position="0 0 0" rotation="0 0 0"></a-video>
+<!--         <a-video id="bgVideoEntity" src="#bgVideo" width="1" height="0.552" position="0 0 0" rotation="0 0 0"></a-video> -->
 
         <!-- Invisible occluder plane placed just in front of models -->
         <a-plane
@@ -118,22 +118,22 @@
         const linkBtn = document.getElementById('link-button');
         const menu = document.getElementById('menu');
         const closeBtn = document.getElementById('close-menu');
-        const bgVideo = document.getElementById('bgVideo');
+        // const bgVideo = document.getElementById('bgVideo');
 
-        bgVideo.addEventListener('canplaythrough', () => {
-          bgVideo.muted = true;
-          bgVideo.playsInline = true;
-          bgVideo.loop = true;
-          bgVideo.play().catch((e) => {
-            console.warn('Autoplay failed:', e);
-          });
-        });
+        // bgVideo.addEventListener('canplaythrough', () => {
+        //   bgVideo.muted = true;
+        //   bgVideo.playsInline = true;
+        //   bgVideo.loop = true;
+        //   bgVideo.play().catch((e) => {
+        //     console.warn('Autoplay failed:', e);
+        //   });
+        // });
 
-        setTimeout(() => {
-          if (bgVideo.paused) {
-            bgVideo.play().catch((e) => {});
-          }
-        }, 1000);
+        // setTimeout(() => {
+        //   if (bgVideo.paused) {
+        //     bgVideo.play().catch((e) => {});
+        //   }
+        // }, 1000);
 
         linkBtn.addEventListener('click', () => {
           menu.style.display = 'flex';

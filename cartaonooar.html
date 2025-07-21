@@ -9,6 +9,21 @@
         overflow: hidden;
         font-family: sans-serif;
       }
+      #instruction {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 30;
+        padding: 12px 24px;
+        background: rgba(0, 0, 0, 0.6);
+        color: white;
+        font-size: 1.2em;
+        text-align: center;
+        border-radius: 8px;
+        opacity: 1;
+        transition: opacity 0.5s ease;
+      }
       #link-button {
         position: absolute;
         bottom: 30px;
@@ -68,52 +83,47 @@
     </style>
   </head>
   <body>
-    <a-scene mindar-image="imageTargetSrc: targets_FINAL.mind;" color-space="sRGB"
+    <!-- instruction overlay -->
+    <div id="instruction">Aponte a sua câmera para a imagem no cartão</div>
+    
+    <a-scene mindar-image="imageTargetSrc: targets_DecoOk1.mind;" color-space="sRGB"
              renderer="colorManagement: true, physicallyCorrectLights"
              vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
       <a-assets>
-        <a-asset-item id="avatarModel" src="LogoNoo_v2.glb"></a-asset-item>
         <a-asset-item id="chapeuModel" src="ChapeuV1.glb"></a-asset-item>
         <a-asset-item id="escadaModel" src="EscadaV1.glb"></a-asset-item>
         <a-asset-item id="ponteModel" src="PonteV1.glb"></a-asset-item>
         <a-asset-item id="estrelaModel" src="EstrelaV1.glb"></a-asset-item>
-        <video id="bgVideo" src="ReelCartaoAR.mp4" preload="auto" muted playsinline webkit-playsinline loop></video>
+        <video id="bgVideo" src="AnimacaoTesteSmall.mp4" preload="auto" muted playsinline webkit-playsinline loop></video>
         <img id="occImage" src="Occ_Test2.png" />
       </a-assets>
+
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
       <!-- Lights -->
       <a-entity light="type: ambient; intensity: 0.75;"></a-entity>
       <a-entity light="type: directional; intensity: 0.9; castShadow: false;" position="1 2 1"></a-entity>
       <a-entity light="type: directional; intensity: 0.5;" position="-1 2 -1"></a-entity>
+
       <a-entity mindar-image-target="targetIndex: 0">
-        <!-- Background video -->
+        <!-- Background video fitting target (aspect 876/680) -->
         <a-video
           id="bgVideoEntity"
           src="#bgVideo"
           width="1"
-          height="0.552"
+          height="1.288235294117647"
           position="0 0 0"
           rotation="0 0 0">
         </a-video>
 
         <!-- Invisible occluder plane using PNG's alpha as mask -->
-<a-plane
-  width="1"
-  height="0.552"
-  position="0 0 0"
-  rotation="0 0 0"
-  material="transparent: true; opacity: 0; colorWrite: false; depthWrite: true; side: double">
-</a-plane>
-        <!-- Main model -->
-        <a-gltf-model
-          id="model"
-          src="#avatarModel"
-          rotation="90 0 0"
-          position="0 0 0.2"
-          scale="2.5 2.5 2.5"
-          animation__rotate="property: rotation; from: 90 0 0; to: 450 0 0; dur: 10000; easing: linear; loop: true"
-          animation__scale="property: scale; from: 2.5 2.5 2.5; to: 3 3 3; dur: 4000; dir: alternate; easing: easeInOutSine; loop: true">
-        </a-gltf-model>
+        <a-plane
+          width="1"
+          height="1.288235294117647"
+          position="0 0 0"
+          rotation="0 0 0"
+          material="transparent: true; opacity: 0; colorWrite: false; depthWrite: true; side: double">
+        </a-plane>
+
         <!-- Chapeu rotating opposite direction -->
         <a-gltf-model
           id="chapeu"
@@ -124,6 +134,7 @@
           animation__rotate="property: rotation; from: 0 0 0; to: 0 -360 0; dur: 9000; easing: linear; loop: true"
           animation__scale="property: scale; from: 1 1 1; to: 1.2 1.2 1.2; dur: 6500; dir: alternate; easing: easeInOutSine; loop: true">
         </a-gltf-model>
+
         <!-- Escada rotating normally -->
         <a-gltf-model
           id="escada"
@@ -134,6 +145,7 @@
           animation__rotate="property: rotation; from: 0 0 0; to: 0 360 0; dur: 8000; easing: linear; loop: true"
           animation__scale="property: scale; from: 1 1 1; to: 1.2 1.2 1.2; dur: 7000; dir: alternate; easing: easeInOutSine; loop: true">
         </a-gltf-model>
+
         <!-- Ponte rotating opposite direction -->
         <a-gltf-model
           id="ponte"
@@ -144,6 +156,7 @@
           animation__rotate="property: rotation; from: 0 0 0; to: 0 -360 0; dur: 8500; easing: linear; loop: true"
           animation__scale="property: scale; from: 1 1 1; to: 1.2 1.2 1.2; dur: 6800; dir: alternate; easing: easeInOutSine; loop: true">
         </a-gltf-model>
+
         <!-- Estrela rotating normally -->
         <a-gltf-model
           id="estrela"
@@ -154,8 +167,10 @@
           animation__rotate="property: rotation; from: 0 0 0; to: 0 360 0; dur: 7500; easing: linear; loop: true"
           animation__scale="property: scale; from: 1 1 1; to: 1.2 1.2 1.2; dur: 6300; dir: alternate; easing: easeInOutSine; loop: true">
         </a-gltf-model>
+
       </a-entity>
     </a-scene>
+
     <!-- UI -->
     <button id="link-button">Links NOO Works</button>
     <div id="menu">
@@ -164,31 +179,33 @@
       <button class="menu-button" onclick="window.open('https://www.instagram.com/noo.works/', '_blank')">Instagram</button>
       <button class="menu-button" onclick="window.open('https://www.behance.net/noo_works', '_blank')">Behance</button>
     </div>
+
     <script>
       document.addEventListener('DOMContentLoaded', () => {
         const linkBtn = document.getElementById('link-button');
         const menu = document.getElementById('menu');
         const closeBtn = document.getElementById('close-menu');
         const bgVideo = document.getElementById('bgVideo');
+        const instr = document.getElementById('instruction');
+
         bgVideo.addEventListener('canplaythrough', () => {
           bgVideo.muted = true;
           bgVideo.playsInline = true;
           bgVideo.loop = true;
-          bgVideo.play().catch((e) => {
-            console.warn('Autoplay failed:', e);
-          });
+          bgVideo.play().catch(e => console.warn('Autoplay failed:', e));
         });
         setTimeout(() => {
-          if (bgVideo.paused) {
-            bgVideo.play().catch((e) => {});
-          }
+          if (bgVideo.paused) bgVideo.play().catch(() => {});
         }, 1000);
-        linkBtn.addEventListener('click', () => {
-          menu.style.display = 'flex';
-        });
-        closeBtn.addEventListener('click', () => {
-          menu.style.display = 'none';
-        });
+
+        linkBtn.addEventListener('click', () => menu.style.display = 'flex');
+        closeBtn.addEventListener('click', () => menu.style.display = 'none');
+
+        // hide instruction after 7s with fade
+        setTimeout(() => {
+          instr.style.opacity = '0';
+          setTimeout(() => instr.style.display = 'none', 500);
+        }, 7000);
       });
     </script>
   </body>

@@ -9,6 +9,21 @@
         overflow: hidden;
         font-family: sans-serif;
       }
+      #instruction {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 30;
+        padding: 12px 24px;
+        background: rgba(0, 0, 0, 0.6);
+        color: white;
+        font-size: 1.2em;
+        text-align: center;
+        border-radius: 8px;
+        opacity: 1;
+        transition: opacity 0.5s ease;
+      }
       #link-button {
         position: absolute;
         bottom: 30px;
@@ -68,6 +83,9 @@
     </style>
   </head>
   <body>
+    <!-- instruction overlay -->
+    <div id="instruction">Aponte a sua camera para a imagem no cartão</div>
+    
     <a-scene mindar-image="imageTargetSrc: targets_DecoOk1.mind;" color-space="sRGB"
              renderer="colorManagement: true, physicallyCorrectLights"
              vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
@@ -80,11 +98,13 @@
         <video id="bgVideo" src="ReelCartaoAR.mp4" preload="auto" muted playsinline webkit-playsinline loop></video>
         <img id="occImage" src="Occ_Test2.png" />
       </a-assets>
+
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
       <!-- Lights -->
       <a-entity light="type: ambient; intensity: 0.75;"></a-entity>
       <a-entity light="type: directional; intensity: 0.9; castShadow: false;" position="1 2 1"></a-entity>
       <a-entity light="type: directional; intensity: 0.5;" position="-1 2 -1"></a-entity>
+
       <a-entity mindar-image-target="targetIndex: 0">
         <!-- Background video -->
         <a-video
@@ -97,13 +117,14 @@
         </a-video>
 
         <!-- Invisible occluder plane using PNG's alpha as mask -->
-<a-plane
-  width="1"
-  height="0.552"
-  position="0 0 0"
-  rotation="0 0 0"
-  material="transparent: true; opacity: 0; colorWrite: false; depthWrite: true; side: double">
-</a-plane>
+        <a-plane
+          width="1"
+          height="0.552"
+          position="0 0 0"
+          rotation="0 0 0"
+          material="transparent: true; opacity: 0; colorWrite: false; depthWrite: true; side: double">
+        </a-plane>
+
         <!-- Main model -->
         <a-gltf-model
           id="model"
@@ -170,6 +191,7 @@
         const menu = document.getElementById('menu');
         const closeBtn = document.getElementById('close-menu');
         const bgVideo = document.getElementById('bgVideo');
+        const instr = document.getElementById('instruction');
         bgVideo.addEventListener('canplaythrough', () => {
           bgVideo.muted = true;
           bgVideo.playsInline = true;
@@ -189,6 +211,11 @@
         closeBtn.addEventListener('click', () => {
           menu.style.display = 'none';
         });
+        // hide instruction after 7s with fade
+        setTimeout(() => {
+          instr.style.opacity = '0';
+          setTimeout(() => { instr.style.display = 'none'; }, 500);
+        }, 7000);
       });
     </script>
   </body>

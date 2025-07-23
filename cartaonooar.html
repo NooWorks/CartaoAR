@@ -4,6 +4,14 @@
     <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
     <style>
+      /* Load DM Sans */
+      @font-face {
+        font-family: 'DM Sans';
+        src: url('DMSans-Regular.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+      }
+
       body {
         margin: 0;
         overflow: hidden;
@@ -23,17 +31,20 @@
         border-radius: 8px;
         opacity: 1;
         transition: opacity 0.5s ease;
+        pointer-events: none;
       }
       #link-button {
         position: absolute;
         bottom: 30px;
         left: 50%;
         transform: translateX(-50%);
-        background: white;
-        padding: 12px 24px;
-        border-radius: 25px;
-        font-weight: bold;
+        background: #CDE017;
+        color: #181818;
+        padding: 16px 32px;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 18px;
         border: none;
+        border-radius: 25px;
         cursor: pointer;
         z-index: 10;
         box-shadow: 0 4px 10px rgba(0,0,0,0.15);
@@ -45,7 +56,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: rgba(255,255,255,0.95);
+        background: rgba(255,255,255,0.8);
         display: none;
         flex-direction: column;
         align-items: center;
@@ -55,15 +66,18 @@
       }
       .menu-button {
         margin: 12px 0;
-        padding: 12px 24px;
-        border-radius: 25px;
+        padding: 16px 32px;
+        width: 220px;
+        background: #EEEEEE;
+        color: #181818;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 18px;
         border: none;
-        background: white;
-        font-weight: bold;
-        font-size: 16px;
+        border-radius: 25px;
         box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         cursor: pointer;
         pointer-events: auto;
+        text-align: center;
       }
       #close-menu {
         position: absolute;
@@ -105,69 +119,29 @@
       <a-entity light="type: directional; intensity: 0.5;" position="-1 2 -1"></a-entity>
 
       <a-entity mindar-image-target="targetIndex: 0">
-        <!-- Background video fitting target (aspect 876/680) -->
-        <a-video
-          id="bgVideoEntity"
-          src="#bgVideo"
-          width="1"
-          height="1.35"
-          position="0 0 0"
-          rotation="0 0 0">
-        </a-video>
+        <!-- Background video fitting target -->
+        <a-video id="bgVideoEntity" src="#bgVideo" width="1" height="1.35" position="0 0 0" rotation="0 0 0"></a-video>
 
-        <!-- Invisible occluder plane using PNG's alpha as mask -->
-        <a-plane
-          width="1"
-          height="1.35"
-          position="0 0 0"
-          rotation="0 0 0"
-          material="transparent: true; opacity: 0; colorWrite: false; depthWrite: true; side: double">
-        </a-plane>
+        <!-- Invisible occluder plane -->
+        <a-plane width="1" height="1.35" position="0 0 0" rotation="0 0 0"
+                 material="transparent: true; opacity: 0; colorWrite: false; depthWrite: true; side: double"></a-plane>
 
-        <!-- Chapeu rotating opposite direction -->
-        <a-gltf-model
-          id="chapeu"
-          src="#chapeuModel"
-          rotation="0 0 0"
-          position="0 0 0"
-          scale="1 1 1"
-          animation__rotate="property: rotation; from: 0 0 0; to: 0 -360 0; dur: 9000; easing: linear; loop: true"
-          animation__scale="property: scale; from: 1 1 1; to: 1.2 1.2 1.2; dur: 6500; dir: alternate; easing: easeInOutSine; loop: true">
-        </a-gltf-model>
+        <!-- 3D models -->
+        <a-gltf-model id="chapeu"    src="#chapeuModel" rotation="0 0 0" position="0 0 0" scale="1 1 1"
+                      animation__rotate="property: rotation; from: 0 0 0; to: 0 -360 0; dur: 9000; easing: linear; loop: true"
+                      animation__scale="property: scale; from: 1 1 1; to: 1.2 1.2 1.2; dur: 6500; dir: alternate; easing: easeInOutSine; loop: true"></a-gltf-model>
 
-        <!-- Escada rotating normally -->
-        <a-gltf-model
-          id="escada"
-          src="#escadaModel"
-          rotation="0 0 0"
-          position="0 0 0"
-          scale="1 1 1"
-          animation__rotate="property: rotation; from: 0 0 0; to: 0 360 0; dur: 8000; easing: linear; loop: true"
-          animation__scale="property: scale; from: 1 1 1; to: 1.2 1.2 1.2; dur: 7000; dir: alternate; easing: easeInOutSine; loop: true">
-        </a-gltf-model>
+        <a-gltf-model id="escada"    src="#escadaModel" rotation="0 0 0" position="0 0 0" scale="1 1 1"
+                      animation__rotate="property: rotation; from: 0 0 0; to: 0 360 0; dur: 8000; easing: linear; loop: true"
+                      animation__scale="property: scale; from: 1 1 1; to: 1.2 1.2 1.2; dur: 7000; dir: alternate; easing: easeInOutSine; loop: true"></a-gltf-model>
 
-        <!-- Ponte rotating opposite direction -->
-        <a-gltf-model
-          id="ponte"
-          src="#ponteModel"
-          rotation="0 0 0"
-          position="0 0 0"
-          scale="1 1 1"
-          animation__rotate="property: rotation; from: 0 0 0; to: 0 -360 0; dur: 8500; easing: linear; loop: true"
-          animation__scale="property: scale; from: 1 1 1; to: 1.2 1.2 1.2; dur: 6800; dir: alternate; easing: easeInOutSine; loop: true">
-        </a-gltf-model>
+        <a-gltf-model id="ponte"     src="#ponteModel" rotation="0 0 0" position="0 0 0" scale="1 1 1"
+                      animation__rotate="property: rotation; from: 0 0 0; to: 0 -360 0; dur: 8500; easing: linear; loop: true"
+                      animation__scale="property: scale; from: 1 1 1; to: 1.2 1.2 1.2; dur: 6800; dir: alternate; easing: easeInOutSine; loop: true"></a-gltf-model>
 
-        <!-- Estrela rotating normally -->
-        <a-gltf-model
-          id="estrela"
-          src="#estrelaModel"
-          rotation="0 0 0"
-          position="0 0 0"
-          scale="1 1 1"
-          animation__rotate="property: rotation; from: 0 0 0; to: 0 360 0; dur: 7500; easing: linear; loop: true"
-          animation__scale="property: scale; from: 1 1 1; to: 1.2 1.2 1.2; dur: 6300; dir: alternate; easing: easeInOutSine; loop: true">
-        </a-gltf-model>
-
+        <a-gltf-model id="estrela"   src="#estrelaModel" rotation="0 0 0" position="0 0 0" scale="1 1 1"
+                      animation__rotate="property: rotation; from: 0 0 0; to: 0 360 0; dur: 7500; easing: linear; loop: true"
+                      animation__scale="property: scale; from: 1 1 1; to: 1.2 1.2 1.2; dur: 6300; dir: alternate; easing: easeInOutSine; loop: true"></a-gltf-model>
       </a-entity>
     </a-scene>
 
@@ -178,6 +152,7 @@
       <button class="menu-button" onclick="window.open('https://noo.com.br/', '_blank')">Website</button>
       <button class="menu-button" onclick="window.open('https://www.instagram.com/noo.works/', '_blank')">Instagram</button>
       <button class="menu-button" onclick="window.open('https://www.behance.net/noo_works', '_blank')">Behance</button>
+      <button class="menu-button" onclick="window.location='mailto:contato@noo.com.br'">Contato</button>
     </div>
 
     <script>

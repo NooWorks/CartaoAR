@@ -108,7 +108,8 @@
         <a-asset-item id="escadaModel" src="EscadaV2.glb"></a-asset-item>
         <a-asset-item id="ponteModel" src="PonteV2.glb"></a-asset-item>
         <a-asset-item id="estrelaModel" src="EstrelaV2.glb"></a-asset-item>
-        <video id="bgVideo" src="ANIMACAO_FINAL_BAIXA.mp4" preload="auto" muted playsinline webkit-playsinline loop></video>
+        <!-- Added autoplay attribute -->
+        <video id="bgVideo" autoplay muted playsinline webkit-playsinline preload="auto" loop src="ANIMACAO_FINAL_BAIXA.mp4"></video>
         <img id="occImage" src="Occ_Test2.png" />
       </a-assets>
 
@@ -161,6 +162,7 @@
         const menu = document.getElementById('menu');
         const closeBtn = document.getElementById('close-menu');
         const bgVideo = document.getElementById('bgVideo');
+        const avideo = document.querySelector('a-video');
         const instr = document.getElementById('instruction');
 
         function ensurePlay() {
@@ -169,10 +171,14 @@
           bgVideo.loop = true;
           bgVideo.play().catch(e => console.warn('Autoplay failed:', e));
         }
+        // Listen for standard event and A-Frame event
         bgVideo.addEventListener('canplaythrough', ensurePlay);
+        avideo.addEventListener('materialvideoloadeddata', ensurePlay);
         if (bgVideo.readyState >= HTMLMediaElement.HAVE_ENOUGH_DATA) {
           ensurePlay();
         }
+        // Last-resort on first tap
+        document.body.addEventListener('click', ensurePlay, { once: true });
 
         linkBtn.addEventListener('click', () => menu.style.display = 'flex');
         closeBtn.addEventListener('click', () => menu.style.display = 'none');

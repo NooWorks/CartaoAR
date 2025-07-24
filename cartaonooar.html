@@ -73,7 +73,7 @@
         font-family: 'DM Sans', sans-serif;
         font-size: 18px;
         border: none;
-        border-radius: 9999px;
+        border-radius: 50px;
         box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         cursor: pointer;
         pointer-events: auto;
@@ -163,15 +163,16 @@
         const bgVideo = document.getElementById('bgVideo');
         const instr = document.getElementById('instruction');
 
-        bgVideo.addEventListener('canplaythrough', () => {
+        function ensurePlay() {
           bgVideo.muted = true;
           bgVideo.playsInline = true;
           bgVideo.loop = true;
           bgVideo.play().catch(e => console.warn('Autoplay failed:', e));
-        });
-        setTimeout(() => {
-          if (bgVideo.paused) bgVideo.play().catch(() => {});
-        }, 1000);
+        }
+        bgVideo.addEventListener('canplaythrough', ensurePlay);
+        if (bgVideo.readyState >= HTMLMediaElement.HAVE_ENOUGH_DATA) {
+          ensurePlay();
+        }
 
         linkBtn.addEventListener('click', () => menu.style.display = 'flex');
         closeBtn.addEventListener('click', () => menu.style.display = 'none');
